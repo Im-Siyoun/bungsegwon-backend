@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { Profile, Strategy } from 'passport-google-oauth20';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { UsersService } from 'src/users/users.service';
+
+import { Auth } from './auth.payload';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor() {
+  constructor(private usersService: UsersService) {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_SECRET,
@@ -13,14 +17,28 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
   }
 
-  async validate(_accessToken: string, _refreshToken: string, profile: any) {
-    const { id, name, emails } = profile;
+  async validate(
+    _accessToken: string,
+    _refreshToken: string,
+    profile: Profile,
+  ) {
+    const { emails } = profile;
 
-    return {
-      provider: 'google',
-      providerId: id,
-      name: name.givenName,
-      username: emails[0].value,
+    const user = await this.usersService.findByEmail(emails[0].value);
+    if (!user) {
+      return { token: _accessToken };
+    }
+
+    const payload: Auth = {
+      token: _accessToken,
+      user: {
+        _id: user._id,
+        nickname: user.nickname,
+        email: user.email,
+        provider: 'google.com',
+      },
     };
+
+    return payload;
   }
 }

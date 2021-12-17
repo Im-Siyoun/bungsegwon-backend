@@ -26,9 +26,15 @@ export class UsersService {
 
     return users;
   }
-  
+
   async delete(nickname: string): Promise<User> {
     const user = await this.userModel.findOneAndDelete({ nickname });
+
+    return user;
+  }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.userModel.findOne({ email });
 
     return user;
   }

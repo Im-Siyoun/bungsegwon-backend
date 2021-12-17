@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
+import { UsersModule } from 'src/users/users.module';
 
 import { GoogleOauthController } from './google.controller';
 import { GoogleStrategy } from './google.strategy';
 
 @Module({
-  imports: [],
+  imports: [UsersModule],
   controllers: [GoogleOauthController],
   providers: [GoogleStrategy],
 })
