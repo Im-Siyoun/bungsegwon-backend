@@ -7,12 +7,14 @@ import {
   Param,
   Post,
   Put,
+  Req,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { GoogleOauthGuard } from 'src/auth/google.guard';
+import { AuthService } from 'src/modules/auth/auth.service';
 
+import { GoogleOauthGuard } from '../googleoauth2/google.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { User } from './schemas/users.schema';
@@ -20,7 +22,10 @@ import { UsersService } from './users.service';
 
 @Controller('/user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Post()
   @HttpCode(201)
@@ -36,18 +41,22 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Put('/:nickname')
-  @UseGuards(GoogleOauthGuard)
+  @Put()
   async update(
-    @Param('nickname') nickname: string,
+    @Req() request: any,
     @Body(ValidationPipe) updateuserdto: UpdateUserDto,
   ): Promise<User> {
-    return this.usersService.update(nickname, updateuserdto);
+    const jwt = request.headers.authorization.replace('Bearer ', '');
+    const json = await this.authService.verifyToken(jwt);
+
+    return this.usersService.update(json.id, updateuserdto);
   }
 
-  @Delete('/:nickname')
-  @UseGuards(GoogleOauthGuard)
-  async delete(@Param('nickname') nickname: string): Promise<User> {
-    return this.usersService.delete(nickname);
+  @Delete()
+  async delete(@Req() request: any): Promise<User> {
+    const jwt = request.headers.authorization.replace('Bearer ', '');
+    const json = await this.authService.verifyToken(jwt);
+
+    return this.usersService.delete(json.id);
   }
 }

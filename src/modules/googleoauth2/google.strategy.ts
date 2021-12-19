@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy } from 'passport-google-oauth20';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
-import { UsersService } from 'src/users/users.service';
+import { CreateUserDto } from 'src/modules/users/dto/create-user.dto';
+import { UsersService } from 'src/modules/users/users.service';
 
 import { Auth } from './auth.payload';
 

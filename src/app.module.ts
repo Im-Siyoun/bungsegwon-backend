@@ -3,13 +3,15 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as joi from 'joi';
 
-import { GoogleOauthModule } from './auth/google.module';
-import { UsersModule } from './users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { GoogleOauthModule } from './modules/googleoauth2/google.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
     UsersModule,
     GoogleOauthModule,
+    AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath:

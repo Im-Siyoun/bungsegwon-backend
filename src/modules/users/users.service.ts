@@ -1,3 +1,4 @@
+import { UseGuards } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -15,8 +16,8 @@ export class UsersService {
     return result;
   }
 
-  async update(nickname: string, userdto: UpdateUserDto): Promise<User> {
-    const user = await this.userModel.findOneAndUpdate({ nickname }, userdto);
+  async update(id: string, userdto: UpdateUserDto): Promise<User> {
+    const user = await this.userModel.findOneAndUpdate({ _id: id }, userdto);
 
     return user;
   }
@@ -27,8 +28,8 @@ export class UsersService {
     return users;
   }
 
-  async delete(nickname: string): Promise<User> {
-    const user = await this.userModel.findOneAndDelete({ nickname });
+  async delete(id: string): Promise<User> {
+    const user = await this.userModel.findOneAndDelete({ _id: id });
 
     return user;
   }

@@ -13,7 +13,4 @@ export class CreateUserDto {
 
   @IsString()
   provider: string;
-
-  @IsString()
-  uid: string;
 }
