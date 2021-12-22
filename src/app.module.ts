@@ -4,11 +4,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import * as joi from 'joi';
 
 import { AuthModule } from './modules/auth/auth.module';
+import { CommentsModule } from './modules/comments/comment.module';
 import { GoogleOauthModule } from './modules/googleoauth2/google.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
+    CommentsModule,
     UsersModule,
     GoogleOauthModule,
     AuthModule,
