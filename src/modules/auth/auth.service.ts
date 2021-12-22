@@ -27,7 +27,7 @@ export class AuthService {
       provider: 'google.com',
     });
 
-    return cookie;
+    return { token: cookie };
   }
 
   async login(user: any) {
