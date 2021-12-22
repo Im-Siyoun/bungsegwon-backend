@@ -39,4 +39,31 @@ export class UsersService {
 
     return user;
   }
+
+  async like(id: string, storeId: string): Promise<User> {
+    const user = await this.userModel.findOneAndUpdate(
+      { _id: id },
+      { $push: { liked_stores: storeId } },
+    );
+
+    return user;
+  }
+
+  async storePost(id: string, storeId: string): Promise<User> {
+    const user = await this.userModel.findOneAndUpdate(
+      { _id: id },
+      { $push: { created_stores: storeId } },
+    );
+
+    return user;
+  }
+
+  async comment(id: string, commentId: string): Promise<User> {
+    const user = await this.userModel.findOneAndUpdate(
+      { _id: id },
+      { $push: { my_comments: commentId } },
+    );
+
+    return user;
+  }
 }

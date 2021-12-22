@@ -23,6 +23,21 @@ export class User {
     required: true,
   })
   provider: string;
+
+  @Prop({
+    type: String,
+  })
+  created_stores: string[];
+
+  @Prop({
+    type: String,
+  })
+  liked_stores: string[];
+
+  @Prop({
+    type: String,
+  })
+  my_comments: string[];
 }
 
 export type UserDocument = User & Document;
