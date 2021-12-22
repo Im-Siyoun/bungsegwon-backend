@@ -1,10 +1,17 @@
 import { Module } from '@nestjs/common';
-import * as joi from 'joi';
-import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import * as joi from 'joi';
+
+import { AuthModule } from './modules/auth/auth.module';
+import { GoogleOauthModule } from './modules/googleoauth2/google.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
+    UsersModule,
+    GoogleOauthModule,
+    AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath:
@@ -18,6 +25,9 @@ import { ConfigModule } from '@nestjs/config';
         DB_URI: joi.string().required(),
         DB_USER: joi.string().required(),
         DB_PASSWORD: joi.string().required(),
+        GOOGLE_CLIENT_ID: joi.string().required(),
+        GOOGLE_SECRET: joi.string().required(),
+        GOOGLE_CALLBACK_URL: joi.string().required(),
       }),
     }),
     MongooseModule.forRoot(process.env.DB_URI, {
