@@ -10,6 +10,7 @@ import {
 import { Request } from 'express';
 
 import { AuthService } from '../auth/auth.service';
+import { User } from '../users/schemas/users.schema';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -26,12 +27,12 @@ export class CommentsController {
   async create(
     @Req() request: Request,
     @Body(ValidationPipe) createCommentDto: CreateCommentDto,
-  ): Promise<Comment> {
+  ): Promise<User> {
     const jwt = request.headers.authorization.replace('Bearer ', '');
     const json = await this.authService.verifyToken(jwt);
     createCommentDto.uid = json.id;
 
-    return this.commentsService.create(createCommentDto);
+    return this.commentsService.create(json.id, createCommentDto);
   }
 
   @Put('/:id')

@@ -59,4 +59,12 @@ export class UsersController {
 
     return this.usersService.delete(json.id);
   }
+
+  @Put('/like/:id')
+  async like(@Param('id') id: string, @Req() request: any): Promise<User> {
+    const jwt = request.headers.authorization.replace('Bearer ', '');
+    const json = await this.authService.verifyToken(jwt);
+
+    return this.usersService.like(json.id, id);
+  }
 }
