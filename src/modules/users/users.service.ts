@@ -66,4 +66,28 @@ export class UsersService {
 
     return user;
   }
+
+  async populateStore(_id: string): Promise<any> {
+    const user = await this.userModel
+      .findOne({ _id })
+      .populate({ path: 'created_stores', model: 'Store' });
+
+    return user.created_stores;
+  }
+
+  async populatelikedStore(_id: string): Promise<any> {
+    const user = await this.userModel
+      .findOne({ _id })
+      .populate({ path: 'liked_stores', model: 'Store' });
+
+    return user.liked_stores;
+  }
+
+  async populateComment(_id: string): Promise<any> {
+    const user = await this.userModel
+      .findOne({ _id })
+      .populate({ path: 'my_comments', model: 'Comment' });
+
+    return user.my_comments;
+  }
 }

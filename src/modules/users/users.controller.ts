@@ -67,4 +67,28 @@ export class UsersController {
 
     return this.usersService.like(json.id, id);
   }
+
+  @Get('/store')
+  async storePost(@Req() request: any): Promise<void> {
+    const jwt = request.headers.authorization.replace('Bearer ', '');
+    const json = await this.authService.verifyToken(jwt);
+
+    return this.usersService.populateStore(json.id);
+  }
+
+  @Get('/liked')
+  async liked(@Req() request: any): Promise<void> {
+    const jwt = request.headers.authorization.replace('Bearer ', '');
+    const json = await this.authService.verifyToken(jwt);
+
+    return this.usersService.populatelikedStore(json.id);
+  }
+
+  @Get('/comments')
+  async comments(@Req() request: any): Promise<void> {
+    const jwt = request.headers.authorization.replace('Bearer ', '');
+    const json = await this.authService.verifyToken(jwt);
+
+    return this.usersService.populateComment(json.id);
+  }
 }
