@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema as MongooseSchema, Types } from 'mongoose';
 
 @Schema({ timestamps: true, versionKey: false })
 export class User {
@@ -25,17 +26,20 @@ export class User {
   provider: string;
 
   @Prop({
-    type: String,
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Store',
   })
-  created_stores: string[];
+  created_stores: Types.ObjectId[];
 
   @Prop({
-    type: String,
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Store',
   })
   liked_stores: string[];
 
   @Prop({
-    type: String,
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Comment',
   })
   my_comments: string[];
 }
